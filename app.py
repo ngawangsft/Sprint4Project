@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go 
-df = pd.read_csv('vehicles_us.csv')
+df = pd.read_csv('vehicles.csv')
 st.header('Used Car Market Analysis')
 
 # --- 1. How Are Used Cars Priced? ---
@@ -13,7 +13,7 @@ if st.checkbox('Show only cars under $40,000'):
 else:
     df_filtered = df
 
-# Ploting histogram of car prices
+# Plotting histogram of car prices
 fig1 = px.histogram(
     df_filtered,
     x='price',
@@ -23,7 +23,15 @@ fig1 = px.histogram(
     color_discrete_sequence=['darkgreen']
 )
 fig1.update_layout(xaxis_tickangle=45)  
-st.plotly_chart(fig1) 
+st.plotly_chart(fig1)
+
+# Summary for "How Are Used Cars Priced?"
+pricing_summary = """
+This histogram represents the distribution of car prices with a realistic cutoff of 40,000, focusing on what an average buyer might expect. 
+Since 75% of cars are priced below 16,839, excluding listings above 40,000 helps remove luxury or rare vehicles, which make up only about 4%-5% of the data. 
+This cutoff still provides a broad but relevant view. The distribution is right-skewed, with most cars priced between 3,000 and 10,000, followed by a gradual decline in frequency as prices increase.
+"""
+st.markdown(pricing_summary)
 
 # --- 2. How Does Mileage Affect Price Across Fuel Types? ---
 st.subheader("2. How Does Mileage Affect Price Across Fuel Types?")
@@ -47,7 +55,15 @@ if st.checkbox("Show Scatterplot: Mileage vs Price"):
     )
 
     fig2.for_each_trace(lambda t: t.update(line=dict(color='white')) if 'gas' in t.name else ())
-    st.plotly_chart(fig2) 
+    st.plotly_chart(fig2)
+
+# Summary for "How Does Mileage Affect Price Across Fuel Types?"
+mileage_summary = """
+This scatterplot shows that as mileage increases, used car prices generally decrease — a trend most evident in gas vehicles, which depreciate faster. 
+Diesel vehicles retain value better, likely due to their durability. Hybrid, electric, and other fuel types are rare in the dataset, making their trends harder to interpret. 
+Still, the market is likely to shift away from gas and diesel as alternative fuel vehicles become more common.
+"""
+st.markdown(mileage_summary)
 
 # --- 3. Which Vehicle Types Hold Their Value Better? ---
 st.subheader("3. Which Vehicle Types Hold Their Value Better?")
@@ -77,7 +93,17 @@ fig3 = px.scatter(
     trendline='ols' 
 )
 
-st.plotly_chart(fig3)  
+st.plotly_chart(fig3)
+
+# Summary for "Which Vehicle Types Hold Their Value Better?"
+value_retention_summary = """
+This scatterplot shows the varying depreciation rates across different vehicle types. The R² values indicate that offroad (0.6116) and pickup (0.5595) vehicles 
+have the strongest relationship between age and price, meaning their value depreciation is more predictable over time. In contrast, convertibles (0.1511) 
+and other vehicles (0.1459) have the weakest relationship, suggesting greater price variability not explained by age. SUVs, sedans, and trucks—common vehicle types—
+fall in the mid-range, with R² values around 0.33 to 0.38, indicating moderate value retention patterns. Overall, vehicle type plays a significant role in how predictable 
+a vehicle depreciates in value over time.
+"""
+st.markdown(value_retention_summary)
 
 # --- 4. R² Value by Vehicle Type ---
 st.subheader("4. R² Value by Vehicle Type")
@@ -111,7 +137,7 @@ fig_r2.update_layout(
     xaxis_tickangle=45 
 )
 
-st.plotly_chart(fig_r2) 
+st.plotly_chart(fig_r2)
 
 # --- 5. What Kinds of Cars Dominate Listings? ---
 st.subheader("5. What Kinds of Cars Dominate Listings?")
@@ -126,7 +152,7 @@ type_counts = df_filtered4['type'].value_counts(normalize=True).reset_index()
 type_counts.columns = ['type', 'percent']
 type_counts['percent'] *= 100  # Convert to percentage
 
-# Createing a bar chart 
+# Creating a bar chart 
 fig4 = px.bar(
     type_counts,
     x='type',
@@ -146,3 +172,21 @@ fig4.update_traces(
 )
 
 st.plotly_chart(fig4)
+
+# Summary for "What Kinds of Cars Dominate Listings?"
+listing_summary = """
+The histogram shows the distribution of vehicle types in the listings. SUVs, Sedans, and Trucks dominate the listings at around 24%. 
+Pickups make up about 13%, and Coupes are at 4.5%. Wagons and Mini-vans together account for ≈5%, while the remaining ≈5% includes Bus, 
+Off-road, Other, Convertibles, Vans, and Hatchbacks, which together make up 4.3% of all listings with the filters (price < 40000, odometer < 250000).
+"""
+st.markdown(listing_summary)
+
+# --- Conclusion ---
+st.subheader("Conclusion")
+conclusion_text = """
+In conclusion, the used car market is shaped by a mix of popular, practical vehicles like SUVs and Trucks, which dominate the listings. 
+There's also a noticeable trend toward better value retention in certain vehicle types, particularly Off-road vehicles and Pickups. 
+As the market evolves, we can expect a growing trend toward fuel-efficient and eco-friendly vehicles, although these types still represent a relatively small fraction of the total listings.
+"""
+
+st.markdown(conclusion_text)
