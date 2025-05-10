@@ -1,5 +1,5 @@
 # Sprint4Project
-Used Car Market Anylysis
+Used Car Market Analysis
 
 Project Description:
 This project emphasizes the practice of building and deploying a web application that visualizes insights from a dataset of U.S. used car listings. You can find interactive visualizations that explore:
@@ -8,7 +8,7 @@ This project emphasizes the practice of building and deploying a web application
 2) The effect of mileage on price across different fuel types
 3) Which vehicle types retain value better over time
 4) R² values by vehicle type to measure model performance
-4) The dominance of various vehicle types in listings
+5) The dominance of various vehicle types in listings
 
 Methods and Libraries Used:
 This project makes use of the following tools and libraries:
@@ -32,4 +32,3 @@ Instructions to Run Project Locally:
 5) Launch the Streamlit app:
     streamlit run app.py
 6) Browser will open automatically, if not, the URL is shown in terminal
-
