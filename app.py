@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go 
+import plotly.graph_objects as go
+import statsmodels.api as sm
+
 df = pd.read_csv('vehicles.csv')
 st.header('Used Car Market Analysis')
 
